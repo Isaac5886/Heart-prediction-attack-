@@ -14,9 +14,11 @@ The dataset includes the following features:
 
 * Cholesterol: Cholesterol levels of the patient
 
-Blood Pressure: Blood pressure of the patient (systolic/diastolic)
-Heart Rate: Heart rate of the patient
-Diabetes: Whether the patient has diabetes (Yes/No)
+* Blood Pressure: Blood pressure of the patient (systolic/diastolic)
+
+* Heart Rate: Heart rate of the patient
+
+* Diabetes: Whether the patient has diabetes (Yes/No)
 Family History: Family history of heart-related problems (1: Yes, 0: No)
 Smoking: Smoking status of the patient (1: Smoker, 0: Non-smoker)
 Obesity: Obesity status of the patient (1: Obese, 0: Not obese)
