@@ -7,9 +7,13 @@ This project aims to predict the likelihood of a heart attack using a data set t
 The dataset includes the following features:
 
 * Patient ID: Unique identifier for each patient
-Age: Age of the patient
-Sex: Gender of the patient (Male/Female)
-Cholesterol: Cholesterol levels of the patient
+
+* Age: Age of the patient
+
+* Sex: Gender of the patient (Male/Female)
+
+* Cholesterol: Cholesterol levels of the patient
+
 Blood Pressure: Blood pressure of the patient (systolic/diastolic)
 Heart Rate: Heart rate of the patient
 Diabetes: Whether the patient has diabetes (Yes/No)
