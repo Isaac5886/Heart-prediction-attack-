@@ -4,8 +4,8 @@
 This project aims to predict the likelihood of a heart attack using a data set that includes various health and lifestyle factors. The prediction is based on the identification of key features that contribute significantly to the assessment of heart attack risk.
 
 # Dataset 
-The dataset has 8763 users and 26 attributes gotten from Kaggle: https://share.google/wOcbIlE09Nyk0fOzG
-The features include the following attributes:
+The dataset has 8763 users and 26 features gotten from Kaggle: https://share.google/wOcbIlE09Nyk0fOzG
+The features include the following:
 
 * Patient ID: Unique identifier for each patient.
 
