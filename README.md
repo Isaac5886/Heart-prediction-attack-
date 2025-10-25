@@ -22,11 +22,11 @@ Heart disease is a leading cause of death worldwide. Early prediction can help p
 
 ---
 
-📁 Dataset
+# 📁 Dataset
 
 The dataset contains *8,763* user records and *26 features*, sourced from [Kaggle](https://share.google/wOcbIlE09Nyk0fOzG). It includes both demographic and medical information used to predict heart attack risk.
 
-*Key Features:*
+# Key Features:
 - *Patient ID:* Unique identifier for each patient.
 
 - *Age:* Age of the patient.
@@ -107,6 +107,16 @@ Created interaction and ratio-based features to enhance model performance:
 - `Smoking_Alcohol_Score`  
 
 ---
+
+# 🧪 Feature Selection
+   - Methods like:
+     - *RFE (Recursive Feature Elimination)*
+     - *L1_Lasso*
+     - *SelectKBest*
+     - *Mutual Information*
+     - *Random Forest
+    
+ ---
 
 # ⚖️ SMOTE (Synthetic Oversampling)  
 - Balanced the dataset using SMOTE to address class imbalance  
