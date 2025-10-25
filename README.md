@@ -17,22 +17,25 @@ This project aims to predict the likelihood of a heart attack based on patient h
 
 ---
 
-# 📁 Dataset
+# 🧠 Problem Statement  
+Heart disease is a leading cause of death worldwide. Early prediction can help prevent fatal incidents. This project builds a machine learning model to classify whether an individual is at risk of a heart attack based on various health indicators.
 
-- *Source*: [Mention source if public — e.g., Kaggle, UCI, Hospital Data, etc.]
-- *Shape*: `8763 rows × 26 columns`
-- *Description*:
-  - Each row represents a patient record
+---
 
-- Patient ID: Unique identifier for each patient.
+📁 Dataset
 
-- Age: Age of the patient.
+The dataset contains *8,763* user records and *26 features*, sourced from [Kaggle](https://share.google/wOcbIlE09Nyk0fOzG). It includes both demographic and medical information used to predict heart attack risk.
 
-- Sex: Gender of the patient (Male/Female).
+*Key Features:*
+- *Patient ID:* Unique identifier for each patient.
 
-- Cholesterol: Cholesterol levels of the patient.
+- *Age:* Age of the patient.
 
-- Blood Pressure: Blood pressure of the patient (systolic/diastolic).
+- *Sex:* Gender of the patient (Male/Female).
+
+- *Cholesterol:* Cholesterol levels of the patient.
+
+- *Blood Pressure:* Blood pressure of the patient (systolic/diastolic).
 
 - Heart Rate: Heart rate of the patient.
 
@@ -76,10 +79,7 @@ This project aims to predict the likelihood of a heart attack based on patient h
 
 - Heart Attack Risk (Outcome): Presence of heart attack risk (1: Yes, 0: No).
 
-# 🧠 Problem Statement  
-Heart disease is a leading cause of death worldwide. Early prediction can help prevent fatal incidents. This project builds a machine learning model to classify whether an individual is at risk of a heart attack based on various health indicators.
-
----
+-----
 
 # 🧼 Data Preprocessing  
 - Handled missing values  
