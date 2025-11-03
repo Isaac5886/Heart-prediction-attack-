@@ -73,9 +73,9 @@ def load_model():
         with open("heart_model.pkl", "rb") as file:
             model = pickle.load(file)
         return model
-    except FileNotFoundError:
-        st.error("⚠️ Failed to load model:{e}")
-        return None
+    #except FileNotFoundError:
+       # st.error("⚠️ Failed to load model:{e}")
+      #  return None
 
 model = load_model()
 
