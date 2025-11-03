@@ -69,13 +69,13 @@ st.markdown("""
 # Load model
 @st.cache_resource
 def load_model():
-  #  try:
+    try:
     with open("heart_model.pkl", "rb") as file:
             model = pickle.load(file)
         return model
-    #except FileNotFoundError:
-       # st.error("⚠️ Failed to load model:{e}")
-      #  return None
+    except FileNotFoundError:
+        st.error("⚠️ Failed to load model:{e}")
+        return None
 
 model = load_model()
 
