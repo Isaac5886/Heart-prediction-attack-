@@ -75,7 +75,7 @@ def load_model():
         return model
     except FileNotFoundError:
         st.error("⚠️ Failed to load model:{e}")
-        st.stop()
+        return None
 
 model = load_model()
 
