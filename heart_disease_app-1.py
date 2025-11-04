@@ -254,7 +254,7 @@ if predict_button:
             
             inputs = [
                 Age, Sex, Cholesterol, Heart, Diabetes, Family, Smoking, Obesity, 
-                Alcohol, Exercise, Diet
+                Alcohol, Exercise 
             ]
             
             inputs_array = np.array(inputs).reshape(1, -1)
