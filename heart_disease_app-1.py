@@ -254,10 +254,7 @@ if predict_button:
             
             inputs = [
                 Age, Sex, Cholesterol, Heart, Diabetes, Family, Smoking, Obesity, 
-                Alcohol, Exercise, Diet, Previous, Medication, Level, Sedentary, 
-                Income, BMI, Triglycerides, Activity, Sleep,
-                country_encoded, Attack, Systolic, Diastolic, Stress, Ratio, BP, 
-                Interaction, Substance
+                Alcohol, Exercise, Diet
             ]
             
             inputs_array = np.array(inputs).reshape(1, -1)
