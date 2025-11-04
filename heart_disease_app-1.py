@@ -1,4 +1,4 @@
-import streamlit as st
+ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
@@ -63,6 +63,15 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin: 10px 0;
     }
+    .debug-box {
+        background-color: #fff7ed;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #f59e0b;
+        margin: 10px 0;
+        font-family: monospace;
+        font-size: 12px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -76,12 +85,35 @@ def load_model():
     except FileNotFoundError:
         st.error("⚠️ Model file not found. Please ensure 'heart_model.pkl' is in the correct directory.")
         return None
+    except Exception as e:
+        st.error(f"⚠️ Error loading model: {str(e)}")
+        return None
 
 model = load_model()
 
+# Display model information for debugging
+if model is not None:
+    with st.sidebar:
+        with st.expander("🔧 Model Debug Info"):
+            st.write("**Model Type:**", type(model).__name__)
+            
+            # Try to get feature names
+            if hasattr(model, 'feature_names_in_'):
+                st.write("**Expected Features:**")
+                st.write(model.feature_names_in_)
+            
+            # Try to get number of features
+            if hasattr(model, 'n_features_in_'):
+                st.write("**Number of Features:**", model.n_features_in_)
+            
+            # Check if it's a pipeline
+            if hasattr(model, 'named_steps'):
+                st.write("**Pipeline Steps:**")
+                for name, step in model.named_steps.items():
+                    st.write(f"- {name}: {type(step).__name__}")
+
 # Professional sidebar
 with st.sidebar:
-    st.image("https://img.icons8.com/color/96/000000/heartbeat.png", width=80)
     st.markdown("## 📊 Clinical Decision Support")
     st.markdown("---")
     
@@ -96,17 +128,8 @@ with st.sidebar:
     st.markdown("### 🔬 Model Information")
     st.markdown("""
     - **Training Dataset:** 8,763 patient records
-    - **Features Analyzed:** 29 clinical indicators
+    - **Features Analyzed:** Clinical indicators
     - **Purpose:** Risk stratification & screening
-    """)
-    
-    st.markdown("---")
-    st.markdown("### 📋 Assessment Process")
-    st.markdown("""
-    1. **Input Data:** Complete all patient information fields
-    2. **Validation:** System validates data integrity
-    3. **Analysis:** ML model processes health indicators
-    4. **Results:** Receive risk assessment with recommendations
     """)
     
     st.markdown("---")
@@ -126,17 +149,18 @@ st.markdown("""
 <h3>Welcome to the Professional Heart Health Assessment Platform</h3>
 <p>This evidence-based risk assessment tool employs machine learning methodology to evaluate 
 cardiovascular disease probability through comprehensive analysis of clinical parameters, 
-lifestyle factors, and patient demographics. The system provides data-driven insights to 
-support early detection and preventive care strategies.</p>
+lifestyle factors, and patient demographics.</p>
 </div>
 """, unsafe_allow_html=True)
 
 st.info("📌 **Note:** All information provided is confidential and used solely for risk calculation purposes.")
 
+# Debug mode toggle
+show_debug = st.checkbox("🐛 Show Debug Information", value=False, help="Display technical details for troubleshooting")
+
 # Input form section
 st.markdown("---")
 st.markdown("## 📝 Patient Information & Clinical Data Entry")
-st.markdown("Please provide accurate information for all fields to ensure optimal assessment accuracy.")
 
 # Create tabs for organized input
 tab1, tab2, tab3, tab4 = st.tabs(["👤 Demographics & Vitals", "🧬 Medical History", "💊 Lifestyle Factors", "🔬 Laboratory Values"])
@@ -246,26 +270,144 @@ if predict_button:
         st.error("❌ Model not loaded. Cannot perform assessment.")
     else:
         with st.spinner("🔄 Analyzing patient data and computing risk scores..."):
-            # Prepare all 29 features
-            country_encoded = ['Argentina', 'Australia', 'Brazil', 'Canada', 'China', 'Colombia', 
-                             'France', 'Germany', 'India', 'Italy', 'Japan', 'New Zealand', 
-                             'Nigeria', 'South Africa', 'South Korea', 'Spain', 'Thailand', 
-                             'United States', 'Vietnam'].index(Country)
+            # Encode country
+            country_list = ['Argentina', 'Australia', 'Brazil', 'Canada', 'China', 'Colombia', 
+                          'France', 'Germany', 'India', 'Italy', 'Japan', 'New Zealand', 
+                          'Nigeria', 'South Africa', 'South Korea', 'Spain', 'Thailand', 
+                          'United States', 'Vietnam']
+            Country_encoded = country_list.index(Country)
             
-            inputs = [
-                Age, Sex, Cholesterol, Heart, Diabetes, Family, Smoking, Obesity, 
-                Alcohol, Exercise 
-            ]
+            # Create a dictionary with all features
+            feature_dict = {
+                'Age': Age,
+                'Sex': Sex,
+                'Cholesterol': Cholesterol,
+                'Heart Rate': Heart,
+                'Diabetes': Diabetes,
+                'Family History': Family,
+                'Smoking': Smoking,
+                'Obesity': Obesity,
+                'Alcohol Consumption': Alcohol,
+                'Exercise Hours Per Week': Exercise,
+                'BMI': BMI,
+                'Blood Pressure (Systolic)': Systolic,
+                'Blood Pressure (Diastolic)': Diastolic,
+                'Income': Income,
+                'Previous Heart Problems': Previous,
+                'Medication Use': Medication,
+                'Heart Attack Risk': Attack,
+                'Substance Abuse': Substance,
+                'Diet': Diet,
+                'Physical Activity Days Per Week': Activity,
+                'Sedentary Hours Per Day': Sedentary,
+                'Sleep Hours Per Day': Sleep,
+                'Stress Level': Level,
+                'Triglycerides': Triglycerides,
+                'Blood Pressure': BP,
+                'BMI-Stress Index': Stress,
+                'Activity-to-Sedentary Ratio': Ratio,
+                'Sleep-Stress Interaction': Interaction,
+                'Country': Country_encoded
+            }
             
-            inputs_array = np.array(inputs).reshape(1, -1)
+            # Try to create DataFrame if model expects feature names
+            if hasattr(model, 'feature_names_in_'):
+                # Model was trained with feature names, create DataFrame
+                try:
+                    # Map our feature names to model's expected names
+                    df_input = pd.DataFrame([feature_dict])
+                    
+                    # Reorder columns to match model's expected features
+                    df_input = df_input[model.feature_names_in_]
+                    inputs_array = df_input.values
+                    
+                    if show_debug:
+                        st.markdown("### 🐛 Debug: Using DataFrame with feature names")
+                        st.dataframe(df_input)
+                except Exception as e:
+                    st.warning(f"Could not match feature names. Using array instead. Error: {e}")
+                    # Fallback to array
+                    inputs = list(feature_dict.values())
+                    inputs_array = np.array(inputs).reshape(1, -1)
+            else:
+                # Model doesn't have feature names, use array
+                inputs = list(feature_dict.values())
+                inputs_array = np.array(inputs).reshape(1, -1)
+            
+            if show_debug:
+                st.markdown("### 🐛 Debug Information")
+                st.markdown(f"**Input Shape:** {inputs_array.shape}")
+                st.markdown(f"**Input Values (first 10):** {inputs_array[0][:10]}")
+                st.markdown(f"**Input Values (last 10):** {inputs_array[0][-10:]}")
             
             try:
                 prediction = model.predict(inputs_array)
                 
+                if show_debug:
+                    st.markdown(f"**Raw Prediction:** {prediction}")
+                    st.markdown(f"**Prediction Type:** {type(prediction)}")
+                    st.markdown(f"**Prediction Value:** {prediction[0]}")
+                
+                # Get probability scores if available
+                has_probability = False
+                try:
+                    probability = model.predict_proba(inputs_array)[0]
+                    low_risk_prob = probability[0] * 100
+                    high_risk_prob = probability[1] * 100
+                    has_probability = True
+                    
+                    if show_debug:
+                        st.markdown(f"**Raw Probabilities:** {probability}")
+                        st.markdown(f"**Low Risk %:** {low_risk_prob:.2f}%")
+                        st.markdown(f"**High Risk %:** {high_risk_prob:.2f}%")
+                        
+                except AttributeError:
+                    low_risk_prob = 0
+                    high_risk_prob = 0
+                    if show_debug:
+                        st.markdown("**Probabilities:** Model doesn't support predict_proba")
+                
                 st.markdown("---")
                 st.markdown("## 📊 Assessment Results")
                 
-                if prediction[0] == 1:
+                # Display probability metrics if available
+                if has_probability:
+                    st.markdown("### 📈 Risk Probability Scores")
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        st.metric(
+                            label="Low Risk Probability",
+                            value=f"{low_risk_prob:.1f}%"
+                        )
+                    
+                    with col2:
+                        st.metric(
+                            label="High Risk Probability",
+                            value=f"{high_risk_prob:.1f}%"
+                        )
+                    
+                    with col3:
+                        confidence = max(low_risk_prob, high_risk_prob)
+                        st.metric(
+                            label="Model Confidence",
+                            value=f"{confidence:.1f}%"
+                        )
+                    
+                    # Visual probability bar
+                    st.markdown("#### Risk Distribution")
+                    st.progress(high_risk_prob / 100)
+                    st.caption(f"Risk Spectrum: {low_risk_prob:.1f}% Low Risk ← → {high_risk_prob:.1f}% High Risk")
+                    st.markdown("---")
+                
+                # Display results based on prediction
+                # Check for prediction value (could be 0, 1, or True/False)
+                is_high_risk = (prediction[0] == 1) or (prediction[0] == True) or (prediction[0] > 0.5)
+                
+                if show_debug:
+                    st.markdown(f"**Is High Risk?** {is_high_risk}")
+                
+                if is_high_risk:
                     st.markdown("""
                     <div style='background-color: #fef2f2; padding: 30px; border-radius: 10px; border-left: 6px solid #dc2626;'>
                         <h2 style='color: #dc2626; margin-top: 0;'>⚠️ HIGH CARDIOVASCULAR RISK DETECTED</h2>
@@ -363,6 +505,7 @@ if predict_button:
                 
             except Exception as e:
                 st.error(f"❌ Error during risk assessment: {str(e)}")
+                st.exception(e)
                 st.info("Please verify all input fields are completed correctly and try again.")
 
 # Footer
@@ -372,14 +515,8 @@ st.markdown("""
     <h3 style='color: #1e40af; margin-top: 0;'>⚕️ Medical Disclaimer & Important Information</h3>
     <p style='color: #1e3a8a; line-height: 1.6;'>
     <strong>This risk assessment tool is intended for educational and screening purposes only.</strong> 
-    The predictive model was developed using a dataset of 8,763 patient records and analyzes 29 clinical 
-    indicators. However, this system does <strong>NOT</strong> constitute medical diagnosis, treatment advice, 
+    However, this system does <strong>NOT</strong> constitute medical diagnosis, treatment advice, 
     or a substitute for professional healthcare consultation.
-    </p>
-    <p style='color: #1e3a8a; line-height: 1.6;'>
-    <strong>Clinical Limitations:</strong> Machine learning models have inherent limitations and may not 
-    account for all individual factors. Risk predictions should be interpreted by qualified healthcare 
-    professionals in the context of complete medical history, physical examination, and additional diagnostic testing.
     </p>
     <p style='color: #1e3a8a; line-height: 1.6;'>
     <strong>Action Required:</strong> If you have concerns about your cardiovascular health, experience 
@@ -388,7 +525,7 @@ st.markdown("""
     </p>
     <hr style='border: 1px solid #93c5fd; margin: 15px 0;'>
     <p style='color: #1e40af; text-align: center; margin-bottom: 0; font-size: 14px;'>
-    © 2024 Heart Disease Risk Assessment System | For Healthcare Professional & Educational Use
+    © 2025 Heart Disease Risk Assessment System | For Healthcare Professional & Educational Use
     </p>
 </div>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)                               "
