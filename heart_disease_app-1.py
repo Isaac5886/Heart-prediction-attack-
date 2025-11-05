@@ -88,7 +88,7 @@ with col2:
 with col3:  
     Country = st.selectbox ('Country:', ['Argentina', 'Australia', 'Brazil', 'Canada', 'China', 'Colombia', 'France', 'Germany', 'India', 'Italy',
               'Japan', 'New Zealand', 'Nigeria', 'South Africa', 'South Korea', 'Spain' 'Thailand', 'United States', 'Vietnam'])
-    Attack = st.selectbox("Heart Attack Risk:", options=[0, 1], format_func=lambda x: "No" if x == 0 else "Yes")
+    #Attack = st.selectbox("Heart Attack #Risk:", options=[0, 1], format_func=lambda x: #"No" if x == 0 else "Yes")
     Systolic= st.number_input("Systolic Blood Pressure (mm Hg):", min_value = 90, max_value = 180)
     Diastolic = st.number_input("Diastolic Blood Pressure (mm Hg):", min_value = 60, max_value = 110)
     Stress = st.number_input("BMI Stress:", min_value = 18.00, max_value = 399.85)
