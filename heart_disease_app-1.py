@@ -104,24 +104,27 @@ if st.button('Predict Heart Disease Risk'):
    inputs = np.asarray(inputs).reshape(1, -1)
    prediction = model.predict(inputs)
  
-   if prediction[0] == 1 :
-      st.error("**HIGH RISK of Heart Disease! Please Consult a doctor immediately**")
-      st.markdown("### Preventive Measures:")
-      st.write("- Maintain a heart-healthy diet (low sodium, high fiber, low fat).")
-      st.write("- Stop smoking and limit alcohol intake.")
-      st.write("- Manage stress through relaxation or counseling.")
-      st.write("- Increse physical activity under doctor supervision.")
-      st.write("- Schedule regular checkups with a cardiologist.")
-      st.write("- Take prescribed medications consistently and monitor vitals.")
-   else:
-      st.success("**LOW RISK of Heart Disease. Keep maintaining your healthy lifestyle!**")
-      st.markdown("### Continue Healthy Routine:")
-      st.write("- Continue eating a balanced and nutritious diet.")
-      st.write("- Stay well hydrated daily.")
-      st.write("- Maintain regular exercise habits.")
-      st.write("- Avoid smoking and reduce alcohol.")
-      st.write("- Get enough quality sleep every night.")
-      st.write("- Keep stress levels low with rest and mindfulness.")
+   prediction = model.predict([inputs])
+
+if prediction[0] == 1:
+    st.error("*HIGH RISK of Heart Disease! Please Consult a doctor immediately*")
+    st.markdown("### Preventive Measures:")
+    st.write("- Maintain a heart-healthy diet (low sodium, high fiber, low fat).")
+    st.write("- Stop smoking and limit alcohol intake.")
+    st.write("- Manage stress through relaxation or counseling.")
+    st.write("- Increase physical activity under doctor supervision.")
+    st.write("- Schedule regular checkups with a cardiologist.")
+    st.write("- Take prescribed medications consistently and monitor vitals.")
+else:
+    st.success("*LOW RISK of Heart Disease. Keep maintaining your healthy lifestyle!*")
+    st.markdown("### Continue Healthy Routine:")
+[11/5, 3:53 PM] Chatgbt: st.write("- Continue eating a balanced and nutritious diet.")
+    st.write("- Stay well hydrated daily.")
+    st.write("- Maintain regular exercise habits.")
+    st.write("- Avoid smoking and reduce alcohol.")
+    st.write("- Get enough quality sleep every night.")
+    st.write("- Keep stress levels low with rest and mindfulness.")
+```
 
  #Footer
 st.markdown("<br><br>", unsafe_allow_html=True)
