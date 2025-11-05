@@ -124,7 +124,7 @@ else:
     st.write("- Avoid smoking and reduce alcohol.")
     st.write("- Get enough quality sleep every night.")
     st.write("- Keep stress levels low with rest and mindfulness.")
-```
+
 
  #Footer
 st.markdown("<br><br>", unsafe_allow_html=True)
