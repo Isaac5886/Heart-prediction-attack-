@@ -104,7 +104,7 @@ if st.button('Predict Heart Disease Risk'):
    inputs = np.asarray(inputs).reshape(1, -1)
    prediction = model.predict(inputs)
  
-   if prediction == 1 :
+   if prediction[0] == 1 :
       st.error("**HIGH RISK of Heart Disease! Please Consult a doctor immediately**")
       st.markdown("### Preventive Measures:")
       st.write("- Maintain a heart-healthy diet (low sodium, high fiber, low fat).")
