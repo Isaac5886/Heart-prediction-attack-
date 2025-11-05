@@ -118,7 +118,7 @@ if prediction[0] == 1:
 else:
     st.success("*LOW RISK of Heart Disease. Keep maintaining your healthy lifestyle!*")
     st.markdown("### Continue Healthy Routine:")
-[11/5, 3:53 PM] Chatgbt: st.write("- Continue eating a balanced and nutritious diet.")
+    st.write("- Continue eating a balanced and nutritious diet.")
     st.write("- Stay well hydrated daily.")
     st.write("- Maintain regular exercise habits.")
     st.write("- Avoid smoking and reduce alcohol.")
